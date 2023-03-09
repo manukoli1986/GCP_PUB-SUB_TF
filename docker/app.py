@@ -15,13 +15,13 @@ def welcome():
 
 @app.route('/data', methods=['GET'])
 def bye():
-    path = "/usr/src/app"
+    path = "/app"
     dir_list = os.listdir(path)
     return dir_list
 
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", ssl_context='adhoc')
-    # app.run(debug=True, host="0.0.0.0", ssl_context=('key.pem', 'cert.pem'))
+    # app.run(debug=True, host="0.0.0.0", ssl_context='adhoc')
+    app.run(debug=True, host="0.0.0.0", ssl_context=('/tmp/cert.pem', '/tmp/key.pem'))
 
 

@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: myapp
-        image: app:v1
+        image: myfirstapp:v3
         imagePullPolicy: Never
         resources:
           limits:
@@ -22,19 +22,17 @@ spec:
         ports:
         - containerPort: 5000
         volumeMounts:
-          - mountPath: "/usr/src/app"
+          - mountPath: "/storage/"
             name: task-pv-storage
-          # - name: secret-mount
-          #   mountPath: "/tmp/"
-          #   readOnly: true
+          - name: secret-mount
+            mountPath: "/tmp/"
       volumes:
         - name: task-pv-storage
           persistentVolumeClaim:
             claimName: mypvc
-        # - name: secret-mount
-        #   secret:
-        #     secretName: certs
-        #     optional: true
+        - name: secret-mount
+          secret:
+            secretName: certs
 ---
 kind: Service
 apiVersion: v1

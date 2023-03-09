@@ -11,7 +11,7 @@ spec:
   accessModes:
     - ReadWriteMany
   hostPath:
-    path: "/tmp/"
+    path: "/storage/"
 
 ---
 apiVersion: v1

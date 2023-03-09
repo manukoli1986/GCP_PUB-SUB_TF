@@ -3,32 +3,32 @@
 ### Updated Coding questions with solutions:
 ### 1. Create a simple application using any language of your choice that can be deployed to
 Kubernetes or and satisfies the following requirements
-a. An application that returns some data to https requests 
+a. An application that returns some data to https requests <br /> 
 Ans: I have used python flask with ssl_context which accepts request on HTTPS with dummpy certs.
 
-b. Is highly available
+b. Is highly available <br />
 Ans: I have used replicaset to run application in HA and also we can go with HPA configuration.
 
-c. Is able to persist data beyond the life of the application
+c. Is able to persist data beyond the life of the application <br />
 Ans: Yes, I have used PV,PVC and mount PVC volume on deployment. My application code is not storing anything but we can use this way to persist the data beyond the life of application/Pod
 
-d. Securely stores and accesses its web security certificate (this cert can be any dummy file)
+d. Securely stores and accesses its web security certificate (this cert can be any dummy file) <br />
 Ans: I have used secret from k8 where is keeping key.pem and cert.pem in base64 encoded format. Below is the commad to create key.pem and cert.pem. Mount secret as volume in pod so that it can be picked by python app to start it. 
 
 Bonus:
-a. Only receives requests once the application is started
+a. Only receives requests once the application is started <br />
 Ans: I have used readiness probe to achieve this task.
 
-b. Automatically restarts if the application is unresponsive
+b. Automatically restarts if the application is unresponsive <br />
 Ans: I have used here liveness probe to achieve this.
 
-c. Only one replica can be unavailable at any time
+c. Only one replica can be unavailable at any time <br />
 Ans: Pod Disruption Budget is the best option to run atleast 1 replica of application 
 
-d. Organize Kubernetes resource manifests using Kustomize and/or Helm
+d. Organize Kubernetes resource manifests using Kustomize and/or Helm <br />
 Ans: Created Helm chart to deploy application smoothly
 
-e. Deploy the application into a service mesh
+e. Deploy the application into a service mesh <br />
 Ans: Using Linkerd which lightweight and easy to integrate with on going application on K8 cluster. 
 
 
@@ -74,9 +74,6 @@ mayankkoli@mayankkoli-mac docker % curl https://localhost:32321/welcome -k
 }
 mayankkoli@mayankkoli-mac docker % curl https://localhost:32321/data -k   
 [
-  "Dockerfile",
-  "cert.pem",
-  "key.pem",
   "app.py",
   "requirements.txt"
 ]
@@ -87,7 +84,7 @@ NAME        MIN AVAILABLE   MAX UNAVAILABLE   ALLOWED DISRUPTIONS   AGE
 myapp-pdp   1               N/A               0                     81s
 
 
-#### I had already setup linkerd so just inject the linkerd in running deployment
+#### I had already setup linkerd (https://linkerd.io/2.12/getting-started/#) so just inject the linkerd in running deployment
 ```bash
 kubectl get deploy -o yaml | linkerd inject - | kubectl apply -f -
 linkerd viz dashboard &

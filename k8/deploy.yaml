@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp
+spec:
+  selector:
+    matchLabels:
+      app: myapp
+  template:
+    metadata:
+      labels:
+        app: myapp
+    spec:
+      containers:
+      - name: myapp
+        image: app:v1
+        imagePullPolicy: Never
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 5000
+        volumeMounts:
+          - mountPath: "/usr/src/app"
+            name: task-pv-storage
+          # - name: secret-mount
+          #   mountPath: "/tmp/"
+          #   readOnly: true
+      volumes:
+        - name: task-pv-storage
+          persistentVolumeClaim:
+            claimName: mypvc
+        # - name: secret-mount
+        #   secret:
+        #     secretName: certs
+        #     optional: true
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: mysvc
+spec:
+  selector:
+    app: myapp
+  ports:
+  - protocol: TCP
+    port: 5000
+    nodePort: 32321
+  type: NodePort
+
+

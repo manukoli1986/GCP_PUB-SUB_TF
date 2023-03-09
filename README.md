@@ -14,6 +14,22 @@ b. Automatically restarts if the application is unresponsive
 c. Only one replica can be unavailable at any time
 d. Organize Kubernetes resource manifests using Kustomize and/or Helm
 e. Deploy the application into a service mesh
+
+
+### Solution 1:
+
+openssl req -x509 -newkey rsa:4096 -nodes -out cert.pem -keyout key.pem -days 365
+
+kubectl create secret generic certs --from-file=key.pem --from-file=cert.pem -o yaml --dry-run > ../k8/secret.yaml
+
+
+
+
+
+
+
+
+
 2. Develop Terraform code for creating and managing 10,000 Google Pub/Sub topics.
 
 ### GCP Technical Questions:

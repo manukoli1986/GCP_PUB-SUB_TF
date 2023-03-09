@@ -1,8 +1,8 @@
 # GCP_PUB-SUB_TF
 
 ### Updated Coding questions with solutions:
-### 1. Create a simple application using any language of your choice that can be deployed to
-Kubernetes or and satisfies the following requirements
+### 1. Create a simple application using any language of your choice that can be deployed to Kubernetes or and satisfies the following requirements
+
 a. An application that returns some data to https requests <br /> 
 Ans: I have used python flask with ssl_context which accepts request on HTTPS with dummpy certs.
 
@@ -15,7 +15,7 @@ Ans: Yes, I have used PV,PVC and mount PVC volume on deployment. My application 
 d. Securely stores and accesses its web security certificate (this cert can be any dummy file) <br />
 Ans: I have used secret from k8 where is keeping key.pem and cert.pem in base64 encoded format. Below is the commad to create key.pem and cert.pem. Mount secret as volume in pod so that it can be picked by python app to start it. 
 
-Bonus:
+Bonus: <br /> 
 a. Only receives requests once the application is started <br />
 Ans: I have used readiness probe to achieve this task.
 

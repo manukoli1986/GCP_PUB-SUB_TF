@@ -7,7 +7,7 @@ a. An application that returns some data to https requests <br />
 Ans: I have used python flask with ssl_context which accepts request on HTTPS with dummpy certs.
 
 b. Is highly available <br />
-Ans: I have used replicaset to run application in HA and also we can go with HPA configuration.
+Ans: I have used ssl_context with flask which is running on single pod. If I would have used external SSL from Let'sencrypt or other SSL provider then I would have used gunicorn or Nginx to handle SSL certificates. However due to less time, I am just using ssl_context for HTTPS requests. We also replicaSets or HPA to achieve high availability. 
 
 c. Is able to persist data beyond the life of the application <br />
 Ans: Yes, I have used PV,PVC and mount PVC volume on deployment. My application code is not storing anything but we can use this way to persist the data beyond the life of application/Pod
@@ -20,7 +20,7 @@ a. Only receives requests once the application is started <br />
 Ans: I have used readiness probe to achieve this task.
 
 b. Automatically restarts if the application is unresponsive <br />
-Ans: I have used here liveness probe to achieve this.
+Ans: I have used here liveness probe to achieve this because kubernetes provides liveness probes to detect and remedy such situations.
 
 c. Only one replica can be unavailable at any time <br />
 Ans: Pod Disruption Budget is the best option to run atleast 1 replica of application 
@@ -49,8 +49,22 @@ mayankkoli@mayankkoli-mac docker % kubectl create secret generic certs --from-fi
 
 ##### To install application via helm charts
 ```bash
-helm upgrade --install myfirstapp . -f values.yaml
-helm list 
+mayankkoli@mayankkoli-mac k8 % helm upgrade --install myfirstapp ./myfirstapp
+Release "myfirstapp" has been upgraded. Happy Helming!
+NAME: myfirstapp
+LAST DEPLOYED: Fri Mar 10 18:22:58 2023
+NAMESPACE: default
+STATUS: deployed
+REVISION: 3
+NOTES:
+1. Get the application URL by running these commands:
+  export NODE_PORT=$(kubectl get --namespace default -o jsonpath="{.spec.ports[0].nodePort}" services myfirstapp)
+  export NODE_IP=$(kubectl get nodes --namespace default -o jsonpath="{.items[0].status.addresses[0].address}")
+  echo https://$NODE_IP:$NODE_PORT
+mayankkoli@mayankkoli-mac k8 % curl https://localhost:32321/welcome -k       
+{
+  "message": "welcome"
+}
 ```
 
 ##### To verify app is deployed and running
@@ -96,6 +110,15 @@ linkerd viz dashboard &
 ### 2. Develop Terraform code for creating and managing 10,000 Google Pub/Sub topics.
 ### Solution
 
+We need to setup gcloud init to get your workstation authenticate and it will provide config json file which will be used by terraform to communicate to GCP cloud via gRPC call. 
+
+```bash
+cd terraform
+terraform init
+terraform apply -auto-approve
+
+terraform destroy -auto-approve
+```
 
 ### GCP Technical Questions:
 1. <b>Question</b>: Considering app engine and cloud run. If the application is required to be mult-regional which service would you recommend?. Explain why? <br />

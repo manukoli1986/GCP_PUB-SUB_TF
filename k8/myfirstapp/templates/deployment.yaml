@@ -37,17 +37,39 @@ spec:
             - name: http
               containerPort: {{ .Values.service.port }}
               protocol: TCP
+          volumeMounts:
+            # - mountPath: "/storage/"
+            #   name: task-pv-storage
+            - name: secret-mount
+              mountPath: "/tmp/"
           livenessProbe:
             httpGet:
               path: /
-              port: http
+              port: 5000
+              scheme: HTTPS
+            initialDelaySeconds: 110
+            periodSeconds: 10
+            failureThreshold: 3
+            timeoutSeconds: 10
           readinessProbe:
             httpGet:
               path: /
-              port: http
+              port: 5000
+              scheme: HTTPS
+            initialDelaySeconds: 120
+            periodSeconds: 10
+            failureThreshold: 3
+            timeoutSeconds: 100
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-      {{- with .Values.nodeSelector }}
+      volumes:
+        # - name: task-pv-storage
+        #   persistentVolumeClaim:
+        #     claimName: mypvc
+        - name: secret-mount
+          secret:
+            secretName: {{ .Values.secret.name }}
+      {{- with .Values.nodeSelector }} 
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}

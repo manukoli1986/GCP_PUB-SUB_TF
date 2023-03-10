@@ -103,7 +103,7 @@ myapp-pdp   1               N/A               0                     81s
 kubectl get deploy -o yaml | linkerd inject - | kubectl apply -f -
 linkerd viz dashboard &
 ```
-
+![alt text](https://github.com/manukoli1986/GCP_PUB-SUB_TF/blob/main/Screenshot.png)
 
 
 
